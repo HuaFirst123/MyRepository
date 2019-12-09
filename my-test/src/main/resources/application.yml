@@ -37,9 +37,9 @@ spring:
    redis:
       database: 0
       poll:
-         max-active: 8
+         max-active: 7
          max-wait: 1
-         max-idle: 8
+         max-idle: 9
          min-idle: 0
       timeout: 5000
 
