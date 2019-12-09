@@ -1,0 +1,129 @@
+spring:
+   http:
+      encoding:
+         charset: UTF-8
+         enabled: true
+         force: true
+         
+   mvc:
+      throw-exception-if-no-handler-found: true
+   resources:
+      add-mappings: false
+      
+   datasource:
+       driverClassName: com.mysql.jdbc.Driver
+       type: com.alibaba.druid.pool.DruidDataSource
+   #druid:
+       initialSize: 5
+       maxActive: 10
+       minIdle: 3
+       maxWait: 600000
+       removeAbandoned: true
+       removeAbandonedTimeout: 180
+       timeBetweenEvictionRunsMillis: 600000
+       minEvictableIdleTimeMillis: 300000
+       validationQuery: SELECT 1 FROM DUAL
+       testWhileIdle: true
+       testOnBorrow: false
+       testOnReturn: false
+       poolPreparedStatements: true
+       maxPoolPreparedStatementPerConnectionSize: 50
+       filters: stat
+       #data: classpath:initsql/data.sql ##初始化表数据 根据自身需要选择,多租户不支持,或者没有需要请去掉该项配置
+       initialization-mode: always
+       #指定SQL scripts编码.
+       sql-script-encoding: utf-8
+       
+   redis:
+      database: 0
+      poll:
+         max-active: 8
+         max-wait: 1
+         max-idle: 8
+         min-idle: 0
+      timeout: 5000
+
+   jackson:
+      #default-property-inclusion: non_null
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+      serialization:
+         WRITE_DATES_AS_TIMESTAMPS: false
+         
+   mail:
+      #default-encoding: UTF-8  
+      properties: 
+         mail:
+            smtp: 
+               # 设置是否需要认证，如果为true,那么用户名和密码就必须的，
+               # 如果设置false，可以不设置用户名和密码，当然也得看你的对接的平台是否支持无密码进行访问的。
+               auth: true
+               ssl:
+                  enable: true
+               socketFactory: 
+                  class: com.sun.mail.util.MailSSLSocketFactory
+                  fallback: false
+               # STARTTLS[1]  是对纯文本通信协议的扩展。它提供一种方式将纯文本连接升级为加密连接（TLS或SSL），而不是另外使用一个端口作加密通信。
+               # 解决mail health check failed问题 (企业邮箱starttls属性值设置为false,个人邮箱starttls属性值设置为true)
+               starttls:
+                 enable: false
+                 required: false
+               connectiontimeout: 30000
+               timeout: 25000
+               writetimeout: 30000      
+        
+   profiles:
+      active: dev
+      
+   servlet:
+      multipart:
+         max-file-size: 100MB
+         max-request-size: 100MB 
+      
+eureka:
+   client:
+      healthcheck:
+         enabled: true
+   instance:
+      preferIpAddress: true
+      lease-renewal-interval-in-seconds: 5
+      lease-expiration-duration-in-seconds: 10
+      health-check-url-path: /actuator/health
+         
+elasticSearch:
+   client:
+      connectNum: 10
+      connectPerRoute: 50  
+      
+mybatis:
+   configuration:
+      map-underscore-to-camel-case: true
+   mapper-locations: classpath*:com/idea/test/mapper/Mapper/*.xml
+   
+management:
+   endpoints:
+      web:
+         exposure:
+            include: "*"
+   endpoint:
+      health:
+         show-details: ALWAYS
+
+####非框架自带配置项,开始##########    
+##模块编码,用于异常信息处理
+module-code: T001  
+sys:
+   config:
+      tenant: 1
+      authorization:
+         #登录admin后下发的token有效期,单位分钟
+         exp: 300
+         #token分割符
+         token-split: "@@@@@"
+         #用户风格符分割符
+         userid-split: "@"
+         datanode-prefix: idea_
+         commonkey: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCEkhmNy2Fj03SiyJh3hbSi9hLAvkMrNErNDK1rhNllfjpNM7QJE86ZBi2/G7t3bgAVQGUDfyWk0Gxwnhy4ZOVSaZbA1dxNI4D50pVJv24eTRKl3updNANa/6ChRfc5YLNpm1apMWIuFNKMBAYyJBb1ZDi0JvTDdNDrvQ8AfPIu0wIDAQAB"
+
+   
+   

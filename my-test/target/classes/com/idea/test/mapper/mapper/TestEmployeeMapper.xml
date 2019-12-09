@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.idea.test.mapper.TestEmployeeMapper">
+<!-- 	<resultMap id="TestDepartment" type="com.idea.test.vo.TestDepartment">
+        <id column="id" property="id" javaType="java.lang.String"></id>
+        <result column="name" property="name" javaType="java.lang.String"></result>
+        一对多collection中一定要用ofType
+        <collection property="TestEmployee" ofType="com.idea.test.vo.TestEmployee">
+            <id column="id" property="id" javaType="java.lang.String"></id>
+            <result column="name" property="name" javaType="java.lang.String"></result>
+            <result column="age" property="age" javaType="java.lang.Integer"></result>
+            <result column="salary" property="salary" javaType="java.lang.Integer"></result>
+            <result column="dep" property="dep" javaType="java.lang.String"></result>
+            <result column="dep" property="dep" javaType="java.lang.String"></result>
+            
+        </collection>
+    </resultMap> -->
+    
+    <insert id="insert" parameterType="com.idea.test.vo.TestEmployee">
+    	<!-- INSERT INTO 
+    	test_employee
+    	(ID,NAME, AGE,SALARY,DEP) VALUES(#{id},#{name}, #{age},#{salary},#{dep})
+    	where 
+    	#{dep} in (select id from test_department) -->
+    	INSERT INTO 
+    	test_employee
+    	(ID,NAME, AGE,SALARY,DEP,SEX)
+		select #{id},#{name}, #{age},#{salary},#{dep},#{sex} from dual
+    	where exists
+        (select id from test_department where id =#{dep})
+    	
+    </insert>
+    <update id="updateEmployee" parameterType="com.idea.test.vo.TestEmployee">
+    	UPDATE test_employee
+		SET
+		NAME=#{name}, AGE=#{age},SALARY=#{salary},DEP=#{dep},SEX=#{sex}
+		WHERE 
+		ID=#{id}
+    </update>
+    
+
+</mapper>

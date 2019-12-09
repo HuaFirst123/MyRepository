@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- 创建vo的时候合并复合主键 -->
+    <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自带插件，实体类序列化 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+		<!-- 自定义插件，自动为entity生成swagger2文档-->
+		<plugin type="com.idea.platform.common.util.MybatisGenerator">
+		    <property name="apiModelAnnotationPackage" value="io.swagger.annotations.ApiModel" />
+		    <property name="apiModelPropertyAnnotationPackage" value="io.swagger.annotations.ApiModelProperty" />
+		    <property name="vopath" value="com.idea.platform.sys.vo" />
+		</plugin>
+        <commentGenerator>
+            <property name="javaFileEncoding" value="UTF-8"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection
+                driverClass="com.mysql.jdbc.Driver"
+                connectionURL="jdbc:mysql://172.56.2.200:3306/idea_test?useSSL=false"
+                userId="root"
+                password="root"
+        />
+        
+         
+
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+            NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+            <!-- This property is used to specify whether MyBatis Generator should force the use of JSR-310 data types for DATE, TIME,
+            and TIMESTAMP fields, rather than using java.util.Date -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+		
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="com.idea.test.vo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+            <!-- 实体类的基类 -->
+            <property name="rootClass" value="com.idea.platform.common.model.BaseVO"/>
+        </javaModelGenerator>
+
+
+        <!--生成映射文件存放位置（这里必须配，否则报错，但是不会起效）-->
+        <sqlMapGenerator targetPackage="com.idea.test.mapper.Mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+
+        <!--生成Dao类存放位置-->
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
+                                        这里不需要xml，也不需要注解，于是为了方便，我将工具类重写了pluginAdopt的方法去禁用生成它们，并且选用xml减少生成的文件夹
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.idea.test.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        <!--生成对应表及类名-->
+        <!-- enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"是为了禁用example的生成 -->
+        <table tableName="test_employee"
+        	   enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="test_department"
+        	   enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+    </context>
+</generatorConfiguration>

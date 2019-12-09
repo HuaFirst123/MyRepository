@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>java开发平台接口文档中心</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" charset="utf-8" src="includeBootstrap.js"></script>
+<!--[if lt IE 9]>
+   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+   <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+    	.centerText{
+    		text-align: center;
+    	}
+    	.dt-button.red {
+			color: red;
+		}
+		.gren {
+			color: green;
+		}
+    </style>
+</head>
+<body>
+	<div class="panel-body" style="padding-bottom: 2px;">
+		<table id="dataTable" class="table table-striped table-bordered">
+	
+		</table>
+	</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	dataTableInit();//初始化数据表格
+})
+
+function dataTableInit(){
+	var datatable= $('#dataTable').DataTable({
+        "searching": true,
+        "ordering": true,
+        //"order": [[0,'asc'],[1,'desc']],
+        "info": true,
+        "paging": false,
+        //"bScrollInfinite" : true,
+        showRowNumber: true,
+        "scrollX": false,
+        "scrollY": "500px",
+        "lengthChange": false,
+        "lengthMenu": [10, 25, 50, 75, 100],
+        "pageLength": 10,
+        "pagingType": "full_numbers",
+        "stripeClasses": ['strip1', 'strip2', 'strip3'],
+        "autoWidth": true,
+        "autoHeight": false,
+        "processing": true,
+        "destroy": true,
+        serverSide: false,
+        "dom": 'Bfrtip',
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.10.18/i18n/Chinese.json'
+        },
+		ajax:{
+			url:getRoot()+"sys/v1/resources/servers",
+			type:'get',
+			async: false,
+			//dataType:'json',
+			//contentType: 'application/json;charset=utf-8',
+			"dataSrc":"data"
+		},
+		buttons: [
+            {
+                text: '查看监控平台',
+                className:'btn btn-warning',
+                action: function ( e, dt, node, config ) {
+                	window.open('http://172.56.2.201:8085/');
+                },
+	            init: function(api, node, config) {
+	                $(node).removeClass('dt-button')
+	            }
+            }
+        ],
+		columns : [{
+			data : 'serverName',
+			width:'300px',
+			className :"centerText",
+			title : '服务名称'
+		},{
+			data : 'serverName',
+			width:'150px',
+			//className :"centerText",
+			title : '<small>操作</small>',
+			"render": function ( data, type, full, meta ) {
+                return "<div class='btn-group btn-group-sm' role='group' aria-label='...'>"+
+                "	<button type='button' class='btn btn-danger' onclick='to_doc("+JSON.stringify(full)+")'>查看swagger-ui</button>"+
+                "	<button type='button' class='btn btn-info' onclick='to_doc_boot("+JSON.stringify(full)+")'>查看bootstrap文档</button>"+
+                "</div>";
+            }
+		}]
+	});
+	return datatable;
+}
+
+function to_doc(full){
+	//alert(getRootPath());
+	//window.location.href=("/"+full.serverName+"/swagger-ui.html");
+	window.open(getRoot()+full.serverName+"/swagger-ui.html");
+}
+
+function to_doc_boot(full){
+	//alert(getRootPath());
+	//window.location.href=("/"+full.serverName+"/swagger-ui.html");
+	window.open(getRoot()+full.serverName+"/doc.html");
+}
+</script>
+</html>

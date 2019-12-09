@@ -1,0 +1,114 @@
+server:
+   port: 8083
+
+####指标监控开启logger#######
+logging:
+   path: "/root/app-idea/logs"
+   config: classpath:logback-test.xml
+   file: ${logging.path}/${spring.application.name}-console.log
+   
+spring:
+   application:
+      name: sys-server  ##服务名称,注册中心唯一##
+   datasource:
+      url: jdbc:mysql://172.56.2.200:8066/idea_plat?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: ENC(9GloWz1itgyIs6dw+YOH9/pZPUJO7Q1Q)    #idea_root
+      password: ENC(eezQ/jlyfxh+PFbU48QvW4Te/FwyAtH3)    #idea@123
+      #需要初始化时,使用物理库且放开以下注释
+      #schema: classpath:initsql/schema.sql ##初始化建表
+      #data: classpath:initsql/data.sql ##初始化表数据 根据自身需要选择,多租户不支持,或者没有需要请去掉该项配置
+      
+   redis:
+      host: 172.56.2.200
+      port: 16379
+      password: ENC(eezQ/jlyfxh+PFbU48QvW4Te/FwyAtH3)    #idea@123      
+      
+   rabbitmq:
+      host: 172.56.2.200
+      port: 5672
+      #firewall-cmd --permanent --add-port=15672/tcp
+
+      #firewall-cmd --permanent --add-port=5672/tcp
+
+      #systemctl restart firewalld.service
+      username: root  #添加用户 rabbitmqctl add_user mq 123456  授权:rabbitmqctl set_user_tags mq administrator 读写权限:rabbitmqctl set_permissions -p "/" root ".*" ".*" ".*" rabbitmq-server -detached rabbitmqctl stop
+      password: idea@123
+      
+   mail:
+      ##邮箱服务器地址   
+      host: smtp.exmail.qq.com
+      #邮箱服务器端口
+      port: 465
+      # 默认是smtp协议
+      protocol: smtp
+      #配置发送邮箱
+      username: lifanfan@idea-group.cn
+      #password为邮箱授权密码（不是登录邮箱的密码） 除阿里云邮箱填登录密码外,其他邮箱均填写授权码
+      password: fcBqrfSpKgDFV9AU
+      #设置邮件显示的用户名 替换直接显示邮箱
+      name: 李凡凡      
+
+eureka:
+   client:
+      serviceUrl:
+         defaultZone: http://172.56.2.201:7001/eureka/
+   instance:
+      ip-address: 172.56.2.201
+      hostname: ${eureka.instance.ip-address}
+      instance-id: ${eureka.instance.ip-address}:${server.port}
+
+elasticSearch:
+   hostlist: 172.56.11.105:9200
+   
+#jasypt加密的密匙 用于铭感配置加密
+jasypt:
+   encryptor:
+      password: EbfYkitulv73I2p0mXI50JMXoaxZTKJ7
+
+socketio: 
+   # 设置端口号
+   host: 172.56.2.201
+   port: 8090
+sys: 
+   file: 
+      config: ## 文件上传存储配置 ，存储在服务器本地，fdfs，nas 3种方式，根据要求配置一种即可
+#         local: ## 文件直接存储系统服务器
+#            enable: true 
+#            storepath: /opt/file/ ## 文件存储基本路径 以/开始，/ 结束
+#            downloadpath: http://172.56.11.105:9000  ## 文件下载路径
+#         nas:  ## 文件存储在nas服务器
+#            enable: true
+#            url:
+#            port:
+#            username:
+#            password:
+         fdfs:  ## 文件存储在fdfs，fdfs其他配置需单独配置
+            enable: true
+            downloadpath: http://172.56.11.105:9000
+
+## fdfs具体配置
+#fdfs:
+   # 缩略图配置
+#   thumbImage: 
+#      width: 150
+#      height: 150
+#   trackerList:            #TrackerList参数,支持多个
+#      - 172.56.11.105:22122
+#   domain: 172.56.11.105:9000
+####非框架自带配置项,结束##########
+            
+fdfs:
+   trackerList:            #TrackerList参数,支持多个
+      - 172.56.11.105:22122
+   domain: 172.56.11.105:9000
+   
+management:
+   health:
+      mail:
+         enabled: false
+         
+swagger:
+   enable: true
+         
+   
+   

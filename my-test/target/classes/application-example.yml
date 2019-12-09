@@ -1,0 +1,92 @@
+server:
+   port: ${serverPort}
+
+####指标监控开启logger#######
+logging:
+   path: "/root/app-idea/logs"
+   config: classpath:logback-pro.xml
+   file: ${logging.path}/${spring.application.name}-console.log
+   
+spring:
+   application:
+      name: sys-server  ##服务名称,注册中心唯一##
+   datasource:
+      url: jdbc:mysql://${dbIp}:${dbPort}/${dbName}?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: ${dbUsername}    #idea_root
+      password: ${dbPassword}    #idea@123
+      
+      #需要初始化时,使用物理库且放开以下注释
+      #schema: classpath:initsql/schema.sql ##初始化建表
+      #data: classpath:initsql/data.sql ##初始化表数据 根据自身需要选择,多租户不支持,或者没有需要请去掉该项配置
+      
+   redis:
+      host: ${redisIp}
+      port: ${redisPort}
+      password: ${redisPassword}    #idea@123      
+      
+   rabbitmq:
+      host: ${rabbitmqIp}
+      port: ${rabbitmqPort}
+      #firewall-cmd --permanent --add-port=15672/tcp
+
+      #firewall-cmd --permanent --add-port=5672/tcp
+
+      #systemctl restart firewalld.service
+      username: ${rabbitmqUsername}  #添加用户 rabbitmqctl add_user mq 123456  授权:rabbitmqctl set_user_tags mq administrator 读写权限:rabbitmqctl set_permissions -p "/" root ".*" ".*" ".*" rabbitmq-server -detached rabbitmqctl stop
+      password: ${rabbitmqPassword}
+      
+   mail:
+      ##邮箱服务器地址   
+      host: ${mailHost} #smtp.exmail.qq.com
+      #邮箱服务器端口
+      port: ${mailPort} #465
+      # 默认是smtp协议
+      protocol: ${mailProtocol} #smtp
+      #配置发送邮箱
+      username: ${mailUsername} #lifanfan@idea-group.cn
+      #password为邮箱授权密码（不是登录邮箱的密码） 除阿里云邮箱填登录密码外,其他邮箱均填写授权码
+      password: ${mailPassword} #ecBqrfSpKgDFV9AU
+      #设置邮件显示的用户名 替换直接显示邮箱
+      name: ${mailName} #发件人名称
+      
+eureka:
+   client:
+      serviceUrl:
+         defaultZone: http://172.56.2.201:7001/eureka/
+   instance:
+      ip-address: ${clientIpAddress}
+      hostname: ${eureka.instance.ip-address}
+      instance-id: ${eureka.instance.ip-address}:${server.port}
+
+elasticSearch:
+   hostlist: ${esIp}:${esPort} 
+   
+#jasypt加密的密匙 用于铭感配置加密
+jasypt:
+   encryptor:
+      password: ${jasyptPassword}
+      
+socketio: 
+   # 设置端口号
+   host: ${socketIp}
+   port: ${socketPort}  
+   
+fdfs:
+   trackerList:            #TrackerList参数,支持多个
+      - 172.56.11.105:22122
+   domain: 172.56.11.105:9000
+   
+#是否开启邮箱健康检查
+management:
+   health:
+      mail:
+         enabled: false
+            
+swagger:
+   enable: ${swaggerEnable}
+
+         
+
+         
+   
+   
