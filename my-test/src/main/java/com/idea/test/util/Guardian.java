@@ -28,7 +28,7 @@ public class Guardian {
     	for(Object a: args)
     	System.out.print(a+" ");
     	System.out.println();
-    	System.out.println("around 环绕启动被监听的方法");
+    	System.out.println("qwerweret234234ound testetw环绕234325345听的方法");
     	pjp.proceed();
         System.out.println("around【守护者】发现猴子正在徘徊...");  
     }  
